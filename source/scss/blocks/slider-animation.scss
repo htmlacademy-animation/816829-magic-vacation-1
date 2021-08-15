@@ -4,12 +4,12 @@
   transition: opacity 0.6s, transform 0.6s;
   transition-delay: 0.2s;
 
-  .slider__item.swiper-slide-active & {
+  .screen.active .slider__item.swiper-slide-active & {
     opacity: 1;
     transform: translateX(0);
   }
 
-  .slider__item.swiper-slide-active + .slider__item & {
+  .screen.active .slider__item.swiper-slide-active + .slider__item & {
     @media (min-width: $mobile + 1) and (orientation: landscape) {
       opacity: 1;
       transform: translateX(0);
