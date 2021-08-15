@@ -3923,12 +3923,12 @@ img {
   transition: opacity 0.6s, transform 0.6s;
   transition-delay: 0.2s;
 }
-.slider__item.swiper-slide-active .slider__item-text {
+.screen.active .slider__item.swiper-slide-active .slider__item-text {
   opacity: 1;
   transform: translateX(0);
 }
 @media (min-width: 769px) and (orientation: landscape) {
-  .slider__item.swiper-slide-active + .slider__item .slider__item-text {
+  .screen.active .slider__item.swiper-slide-active + .slider__item .slider__item-text {
     opacity: 1;
     transform: translateX(0);
     transition-delay: 0.4s;
