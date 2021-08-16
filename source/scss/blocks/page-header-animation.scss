@@ -1,21 +1,51 @@
+.page-header__logo {
+  opacity: 0;
+  transform: translateX(-1.5rem);
+  transition:
+    opacity 0.3s $cubic-bezier-almost-done-at-half 0.2s,
+    transform 0.3s $cubic-bezier-almost-done-at-half 0.2s;
+
+  .loaded & {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.page-header__nav,
+.page-header__toggler {
+  opacity: 0;
+  transition: opacity 0.3s $cubic-bezier-almost-done-at-half 0.3s;
+
+  .loaded & {
+    opacity: 1;
+  }
+}
+
 .page-header__menu {
   a {
     transition: color 0.3s;
 
     &::after {
-      left: auto;
-      right: 0;
       display: block;
-      width: 0;
-      transition: width 0.3s;
+      transform: scaleX(0);
+      transform-origin: right center;
+      transition: transform 0.3s;
     }
 
-    &.active,
-    &:hover,
-    &:focus {
+    &.active {
       &::after {
-        left: 0;
-        width: 100%;
+        transition-delay: 0.3s;
+      }
+    }
+
+    .loaded & {
+      &.active,
+      &:hover,
+      &:focus {
+        &::after {
+          transform: scaleX(1);
+          transform-origin: left center;
+        }
       }
     }
   }

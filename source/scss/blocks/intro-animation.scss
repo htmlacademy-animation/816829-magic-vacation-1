@@ -1,7 +1,9 @@
 .intro__message {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s, transform 0.6s;
+  transform: translateY(2rem);
+  transition:
+    opacity 0.6s ease 1.2s,
+    transform 0.6s ease 1.2s;
 
   .screen.active & {
     opacity: 1;

@@ -1,26 +1,46 @@
+.social-block {
+  opacity: 0;
+  transform: scale(0);
+  transition:
+    opacity 0.3s ease 0.4s,
+    transform 0.3s ease 0.4s;
+
+  .loaded & {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .social-block__toggler {
   transition: color 0.3s;
 
   &::before {
-    transition: width 0.3s, height 0.3s, border-color 0.3s;
+    transition:
+      width 0.3s,
+      height 0.3s,
+      border-color 0.3s;
   }
 }
 
 .social-block__list {
   li {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(1rem);
 
     .social-block--active &,
     .social-block:focus-within & {
       opacity: 1;
-      transition: opacity 0.6s, transform 0.6s;
       transform: translateY(0);
-      transition-delay: var(--transition-delay);
+      transition:
+        opacity 0.6s ease var(--transition-delay),
+        transform 0.6s ease var(--transition-delay);
     }
   }
 }
 
 .social-block__link {
-  transition: color 0.3s, background-color 0.3s, border-color 0.3s;
+  transition:
+    color 0.3s,
+    background-color 0.3s,
+    border-color 0.3s;
 }
