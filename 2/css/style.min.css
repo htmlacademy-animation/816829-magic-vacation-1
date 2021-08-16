@@ -2302,11 +2302,13 @@ img {
   transform: translateX(0);
 }
 
-.page-header__nav {
+.page-header__nav,
+.page-header__toggler {
   opacity: 0;
   transition: opacity 0.3s cubic-bezier(0.27, 0.69, 0.26, 0.96) 0.3s;
 }
-.loaded .page-header__nav {
+.loaded .page-header__nav,
+.loaded .page-header__toggler {
   opacity: 1;
 }
 
