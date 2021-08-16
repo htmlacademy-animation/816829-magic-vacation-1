@@ -1,0 +1,26 @@
+.social-block__toggler {
+  transition: color 0.3s;
+
+  &::before {
+    transition: width 0.3s, height 0.3s, border-color 0.3s;
+  }
+}
+
+.social-block__list {
+  li {
+    opacity: 0;
+    transform: translateY(10px);
+
+    .social-block--active &,
+    .social-block:focus-within & {
+      opacity: 1;
+      transition: opacity 0.6s, transform 0.6s;
+      transform: translateY(0);
+      transition-delay: var(--transition-delay);
+    }
+  }
+}
+
+.social-block__link {
+  transition: color 0.3s, background-color 0.3s, border-color 0.3s;
+}
