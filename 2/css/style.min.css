@@ -3966,37 +3966,6 @@ img {
 }
 
 .social-block {
-  opacity: 0;
-  transform: scale(0);
-  transition: opacity 0.3s ease 0.4s, transform 0.3s ease 0.4s;
-}
-.loaded .social-block {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.social-block__toggler {
-  transition: color 0.3s;
-}
-.social-block__toggler::before {
-  transition: width 0.3s, height 0.3s, border-color 0.3s;
-}
-
-.social-block__list li {
-  opacity: 0;
-  transform: translateY(1rem);
-}
-.social-block--active .social-block__list li, .social-block:focus-within .social-block__list li {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.6s ease var(--transition-delay), transform 0.6s ease var(--transition-delay);
-}
-
-.social-block__link {
-  transition: color 0.3s, background-color 0.3s, border-color 0.3s;
-}
-
-.social-block {
   position: relative;
 }
 .social-block:hover .social-block__list {
@@ -4240,6 +4209,31 @@ img {
     width: 10px;
     height: 10px;
   }
+}
+
+.social-block__toggler {
+  transition: color 0.3s;
+}
+.social-block__toggler::before {
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.4s cubic-bezier(0.6, -0.25, 0.34, 1.51) 0.3s, width 0.3s, height 0.3s, border-color 0.3s;
+}
+.loaded .social-block__toggler::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.social-block__list li {
+  opacity: 0;
+  transform: translateY(1rem);
+}
+.social-block--active .social-block__list li, .social-block:focus-within .social-block__list li {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease var(--transition-delay), transform 0.6s ease var(--transition-delay);
+}
+
+.social-block__link {
+  transition: color 0.3s, background-color 0.3s, border-color 0.3s;
 }
 
 /*# sourceMappingURL=style.min.css.map*/
