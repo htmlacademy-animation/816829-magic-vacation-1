@@ -1,24 +1,19 @@
-.social-block {
-  opacity: 0;
-  transform: scale(0);
-  transition:
-    opacity 0.3s ease 0.4s,
-    transform 0.3s ease 0.4s;
-
-  .loaded & {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
 .social-block__toggler {
   transition: color 0.3s;
 
   &::before {
+    transform: translate(-50%, -50%) scale(0);
     transition:
+      transform 0.4s $cubic-bezier-with-follow-through-after-half 0.3s,
       width 0.3s,
       height 0.3s,
       border-color 0.3s;
+  }
+
+  .loaded & {
+    &::before {
+      transform: translate(-50%, -50%) scale(1);
+    }
   }
 }
 
