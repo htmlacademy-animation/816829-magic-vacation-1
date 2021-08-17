@@ -2,25 +2,40 @@
   transition: color 0.3s;
 
   &::before {
-    transition: width 0.3s, height 0.3s, border-color 0.3s;
+    transform: translate(-50%, -50%) scale(0);
+    transition:
+      transform 0.4s $cubic-bezier-with-follow-through-after-half 0.3s,
+      width 0.3s,
+      height 0.3s,
+      border-color 0.3s;
+  }
+
+  .loaded & {
+    &::before {
+      transform: translate(-50%, -50%) scale(1);
+    }
   }
 }
 
 .social-block__list {
   li {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(1rem);
 
     .social-block--active &,
     .social-block:focus-within & {
       opacity: 1;
-      transition: opacity 0.6s, transform 0.6s;
       transform: translateY(0);
-      transition-delay: var(--transition-delay);
+      transition:
+        opacity 0.6s ease var(--transition-delay),
+        transform 0.6s ease var(--transition-delay);
     }
   }
 }
 
 .social-block__link {
-  transition: color 0.3s, background-color 0.3s, border-color 0.3s;
+  transition:
+    color 0.3s,
+    background-color 0.3s,
+    border-color 0.3s;
 }

@@ -1,0 +1,9 @@
+.screen__footer,
+.screen__disclaimer {
+  transform: translateY(110%);
+  transition: transform 0.3s $cubic-bezier-almost-done-at-half 0.1s;
+
+  .loaded & {
+    transform: translateY(0);
+  }
+}
