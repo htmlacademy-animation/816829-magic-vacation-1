@@ -4,7 +4,7 @@
   &::before {
     transform: translate(-50%, -50%) scale(0);
     transition:
-      transform 0.4s $cubic-bezier-with-follow-through-after-half 0.3s,
+      transform 0.4s $cubic-bezier-follow-through-after-half 0.3s,
       width 0.3s,
       height 0.3s,
       border-color 0.3s;

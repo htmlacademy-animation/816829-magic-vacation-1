@@ -1,33 +1,5 @@
-.form__field-container {
-  flex: none;
-  margin-right: 3rem;
-  width: calc(100% - 21rem);
-  display: flex;
-
-  @media (min-width: $stop-scaling) {
-    margin-right: 3rem;
-    width: calc(100% - 210px);
-  }
-
-  @media (orientation: portrait) {
-    margin-right: 1rem;
-    width: calc(100% - 5rem);
-  }
-
-  @media (max-width: $tablet) and (orientation: landscape) {
-    width: calc(100% - 9rem);
-  }
-
-  @media (max-width: $mobile) and (orientation: landscape) {
-    margin-right: 1rem;
-    width: calc(100% - 5rem);
-  }
-}
-
 .form__field {
   .form__field-container & {
-    margin-left: auto;
-    margin-right: 0;
     width: 0;
     opacity: 0;
     transition: width 0.6s;

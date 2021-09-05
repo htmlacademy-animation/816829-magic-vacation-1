@@ -1,3 +1,62 @@
+.screen {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  &.deactivated {
+    z-index: 0;
+  }
+}
+
+.screen--intro {
+  background-color: $c-dark;
+  background-image: url("../img/scene.png");
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-position: center;
+
+  @include retina {
+    background-image: url("../img/scene@2x.png");
+  }
+
+  @media (orientation: portrait) {
+    background-image: url("../img/scene-mob.png");
+
+    @include retina {
+      background-image: url("../img/scene-mob@2x.png");
+    }
+  }
+}
+
+.screen--prizes {
+  position: relative;
+  background-color: transparent;
+
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    background-color: $c-dark;
+    transform: scaleY(0);
+    transform-origin: center bottom;
+  }
+
+  &.active {
+    &::before {
+      transform: scaleY(1);
+      transition: transform 0.3s linear 0.2s;
+    }
+  }
+}
+
+
 .screen__footer,
 .screen__disclaimer {
   transform: translateY(110%);
