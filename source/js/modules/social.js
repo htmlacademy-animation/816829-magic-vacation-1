@@ -6,9 +6,4 @@ export default () => {
   socialBlock.addEventListener(`mouseleave`, function () {
     socialBlock.classList.remove(`social-block--active`);
   });
-
-  const socialItems = socialBlock.querySelectorAll(`.social-block__list li`);
-  socialItems.forEach((socialItem, socialItemIndex) => {
-    socialItem.style.setProperty(`--transition-delay`, `${(socialItemIndex + 1) * 0.1}s`);
-  });
 };
