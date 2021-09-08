@@ -1,0 +1,66 @@
+.rules__list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: auto auto;
+
+  @media (max-width: $tablet) and (orientation: portrait) {
+    display: grid;
+    grid-auto-flow: row;
+  }
+}
+
+.rules__item {
+  &::before {
+    .screen.active & {
+      animation: scale-up 0.5s $cubic-bezier-follow-through-after-half both;
+    }
+  }
+
+  &::after {
+    .screen.active & {
+      animation: opacity-up 0.2s 0.1s both;
+    }
+  }
+
+  p {
+    .screen.active & {
+      animation: opacity-up, translate-left;
+      animation-duration: 0.4s;
+      animation-delay: 0.15s;
+      animation-fill-mode: both;
+    }
+  }
+
+  @for $i from 1 through 10 {
+    .screen.active &:nth-of-type(#{$i}) {
+      &::before {
+        animation-delay: #{0.2 * $i}s;
+      }
+
+      &::after {
+        animation-delay: #{0.1 + 0.2 * $i}s;
+      }
+
+      p {
+        animation-delay: #{0.15 + 0.2 * $i}s;
+      }
+    }
+  }
+}
+
+.rules__link {
+  .screen.active & {
+    animation: dark-text-opacity-up 0.2s #{1.05 + 0.2}s both;
+  }
+
+  &::before {
+    left: auto;
+    right: 0;
+    opacity: 0;
+    transform: translateY(-50%);
+
+    .screen.active & {
+      animation: btn-background 0.35s 1.05s both;
+    }
+  }
+}

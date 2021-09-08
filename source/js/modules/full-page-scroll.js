@@ -1,5 +1,6 @@
 import throttle from 'lodash/throttle';
-import {ScreenState, setScreenState} from "../helpers/screen-helpers";
+import {ScreenState, setScreenState} from '../helpers/screen-helpers';
+import {scrollIntoViewIfNeeded} from '../helpers/document-helpers';
 
 const Timeout = {
   THROTTLE: 1000,
@@ -25,8 +26,14 @@ export default class FullPageScroll {
   init() {
     document.addEventListener(`wheel`, throttle(this.onScrollHandler, Timeout.THROTTLE, {trailing: true}));
     window.addEventListener(`popstate`, this.onUrlHashChengedHandler);
+    window.addEventListener(`resize`, this.onWindowResize.bind(this));
 
     this.onUrlHashChanged();
+    this.onWindowResize();
+  }
+
+  onWindowResize() {
+    scrollIntoViewIfNeeded(document.getElementById(window.location.hash.substring(1)));
   }
 
   onScroll(evt) {

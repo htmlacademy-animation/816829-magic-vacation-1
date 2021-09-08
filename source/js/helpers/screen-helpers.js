@@ -7,7 +7,7 @@ const ScreenState = {
 };
 
 /**
- * @param {DOMElement} element
+ * @param {Element} element
  * @param {ScreenState} state
  */
 const setScreenState = (element, state) => {
