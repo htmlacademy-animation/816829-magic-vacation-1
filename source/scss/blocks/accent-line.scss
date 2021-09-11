@@ -14,5 +14,7 @@
 
   span {
     display: inline-block;
+
+    @include gpu-screen-animation;
   }
 }

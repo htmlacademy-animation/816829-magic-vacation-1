@@ -2,21 +2,30 @@
   .form__field-container & {
     width: 0;
     opacity: 0;
-    transition: width 0.6s;
+    transition: width 0.6s ease 1.8s, opacity 0s ease 1.8s;
 
     &::placeholder {
       opacity: 0;
-      transition: opacity 0.2s ease 0.4s;
+      transition: opacity 0.2s ease 2.2s;
     }
   }
 
   .screen.active .form__field-container &,
   .screen--show .form__field-container & {
-    opacity: 1;
     width: 100%;
+    opacity: 1;
 
     &::placeholder {
       opacity: 1;
     }
   }
+}
+
+.form__button {
+  animation: fade-in 0.2s ease 1.6s both;
+}
+
+.form__button span,
+.form__button svg {
+  animation: fade-in 0.2s ease 1.8s both;
 }

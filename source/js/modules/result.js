@@ -1,34 +1,40 @@
 export default () => {
-  let showResultEls = document.querySelectorAll(`.js-show-result`);
-  let results = document.querySelectorAll(`.screen--result`);
-  if (results.length) {
-    for (let i = 0; i < showResultEls.length; i++) {
-      showResultEls[i].addEventListener(`click`, function () {
-        let target = showResultEls[i].getAttribute(`data-target`);
-        [].slice.call(results).forEach(function (el) {
-          el.classList.remove(`screen--show`);
-          el.classList.add(`screen--hidden`);
-        });
-        let targetEl = [].slice.call(results).filter(function (el) {
-          return el.getAttribute(`id`) === target;
-        });
-        targetEl[0].classList.remove(`screen--hidden`);
-        setTimeout(() => {
-          targetEl[0].classList.add(`screen--show`);
-        }, 100);
-      });
-    }
+  const hideResult = (result) => {
+    result.classList.replace(`screen--show`, `screen--hidden`);
+  };
 
-    let playBtn = document.querySelector(`.js-play`);
-    if (playBtn) {
-      playBtn.addEventListener(`click`, function () {
-        [].slice.call(results).forEach(function (el) {
-          el.classList.remove(`screen--show`);
-          el.classList.add(`screen--hidden`);
-        });
-        document.getElementById(`messages`).innerHTML = ``;
-        document.getElementById(`message-field`).focus();
+  const showResult = (result) => {
+    result.classList.remove(`screen--hidden`);
+    requestAnimationFrame(() => {
+      result.classList.add(`screen--show`);
+    });
+  };
+
+  const initResults = () => {
+    showResultButtons.forEach((button) => {
+      button.addEventListener(`click`, () => {
+        results.forEach(hideResult);
+
+        const targetResult = results.find((result) => result.id === button.dataset.target);
+        showResult(targetResult);
       });
-    }
-  }
+    });
+  };
+
+  const initPlayButton = () => {
+    playButton.addEventListener(`click`, () => {
+      results.forEach(hideResult);
+      messagesContainer.innerHTML = ``;
+      messageField.focus();
+    });
+  };
+
+  const showResultButtons = Array.from(document.querySelectorAll(`.js-show-result`));
+  const results = Array.from(document.querySelectorAll(`.screen--result`));
+  const playButton = document.querySelector(`.js-play`);
+  const messagesContainer = document.getElementById(`messages`);
+  const messageField = document.getElementById(`message-field`);
+
+  initResults();
+  initPlayButton();
 };

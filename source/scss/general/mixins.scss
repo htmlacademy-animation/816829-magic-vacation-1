@@ -4,6 +4,18 @@
   }
 }
 
+@mixin mobile-portrait {
+  @media (max-width: $mobile - 1) and (orientation: portrait) {
+    @content;
+  }
+}
+
+@mixin not-mobile-portrait {
+  @media (min-width: $mobile), (orientation: landscape) {
+    @content;
+  }
+}
+
 @mixin container {
   margin: 0 auto;
   padding: 0 4rem;
@@ -57,4 +69,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+@mixin gpu-screen-animation {
+  .screen:not(.screen--hidden) & {
+    will-change: transform;
+  }
 }
