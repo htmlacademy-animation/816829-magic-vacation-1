@@ -1,0 +1,31 @@
+.prizes__title {
+  .screen.active & {
+    $delay: 0.7s;
+    $rate: 1;
+    $step: 0.066s;
+
+    .accent-line span {
+      animation: bounce-in-up 0.4s ease $delay both;
+    }
+
+    .accent-line:nth-child(1) span:nth-child(1) {
+      animation-delay: $delay + $rate * $step * 3;
+    }
+
+    .accent-line:nth-child(1) span:nth-child(2) {
+      animation-delay: $delay + $rate * $step * 2;
+    }
+
+    .accent-line:nth-child(1) span:nth-child(3) {
+      animation-delay: $delay + $rate * $step * 1;
+    }
+
+    .accent-line:nth-child(1) span:nth-child(4) {
+      animation-delay: $delay + $rate * $step * 2;
+    }
+
+    .accent-line:nth-child(1) span:nth-child(5) {
+      animation-delay: $delay + $rate * $step * 2.5;
+    }
+  }
+}

@@ -8,25 +8,25 @@ const path = require('path');
 module.exports = {
   entry: {
     scripts: [
-      './source/js/script.js',
-      './source/scss/style.scss',
-      './source/index.html'
+      `./source/js/script.js`,
+      `./source/scss/style.scss`,
+      `./source/index.html`
     ]
   },
   resolve: {
-    extensions: [".js", ".sass", ".scss", ".css"],
-    modules: ['./node_modules/'],
+    extensions: [`.js`, `.sass`, `.scss`, `.css`],
+    modules: [`source`, `./node_modules/`],
   },
-  mode: 'development',
+  mode: `development`,
   devtool: `source-map`,
   devServer: {
-    contentBase: path.join(__dirname, 'build'),
+    contentBase: path.join(__dirname, `build`),
     port: 7777
   },
   output: {
-    path: path.join(__dirname, 'build'),
-    publicPath: '',
-    filename: 'js/script.js'
+    path: path.join(__dirname, `build`),
+    publicPath: ``,
+    filename: `js/script.js`
   },
   module: {
     rules: [
@@ -37,14 +37,14 @@ module.exports = {
             loader: MiniCssExtractPlugin.loader,
           },
           {
-            loader: "css-loader",
+            loader: `css-loader`,
             options: {
               sourceMap: true,
               url: false
             },
           },
           {
-            loader: "sass-loader",
+            loader: `sass-loader`,
             options: { sourceMap: true },
           }
         ],
@@ -56,7 +56,7 @@ module.exports = {
             loader: MiniCssExtractPlugin.loader,
           },
           {
-            loader: "css-loader",
+            loader: `css-loader`,
             options: {
               sourceMap: true,
               url: false
@@ -68,16 +68,16 @@ module.exports = {
         test: /\.html$/,
         use: [
           {
-            loader: 'html-loader',
+            loader: `html-loader`,
             options: {
               attributes: false
             }
           },
           {
-            loader: 'posthtml-loader',
+            loader: `posthtml-loader`,
             options: {
               plugins: [
-                require('posthtml-include')({ root: 'source' })
+                require(`posthtml-include`)({ root: `source` })
               ]
             }
           }
@@ -88,39 +88,39 @@ module.exports = {
   plugins: [
     new WriteFilePlugin(),
     new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: 'source/index.html',
+      filename: `index.html`,
+      template: `source/index.html`,
     }),
     new MiniCssExtractPlugin({
-      filename: 'css/style.min.css',
-      chunkFilename: "[id].css"
+      filename: `css/style.min.css`,
+      chunkFilename: `[id].css`
     }),
     new CssoWebpackPlugin({
-      pluginOutputPostfix: 'min'
+      pluginOutputPostfix: `min`
     }),
     new CopyPlugin([
       {
-        from: "source/fonts/**/*.{woff,woff2}",
-        to: path.join(__dirname, 'build', 'fonts'),
+        from: `source/fonts/**/*.{woff,woff2}`,
+        to: path.join(__dirname, `build`, `fonts`),
         flatten: true,
       },
       {
-        from: "source/img/**",
-        to: path.join(__dirname, 'build'),
+        from: `source/img/**`,
+        to: path.join(__dirname, `build`),
         transformPath(targetPath) {
-          return targetPath.replace(`source${path.sep}`, '');
+          return targetPath.replace(`source${path.sep}`, ``);
         },
       },
       {
-        from: "source/*.ico",
-        to: path.join(__dirname, 'build'),
+        from: `source/*.ico`,
+        to: path.join(__dirname, `build`),
         flatten: true,
       },
       {
-        from: "source/3d/**",
-        to: path.join(__dirname, 'build'),
+        from: `source/3d/**`,
+        to: path.join(__dirname, `build`),
         transformPath(targetPath) {
-          return targetPath.replace(`source${path.sep}`, '');
+          return targetPath.replace(`source${path.sep}`, ``);
         },
       }
     ]),
