@@ -2,6 +2,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  padding: 50px;
 }
 
 .form__label {
@@ -43,6 +44,24 @@
   border: 0;
   border-radius: 3rem;
   outline: none;
+
+  &--input {
+    position: relative;
+    z-index: 1;
+
+    background-color: transparent;
+  }
+
+  &--background {
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    background-color: $c-light;
+  }
 
   &:focus {
     border: 1px solid $c-purple;
@@ -148,6 +167,7 @@
 }
 
 .form__field-container {
+  position: relative;
   flex: none;
   margin-right: 3rem;
   width: calc(100% - 21rem);

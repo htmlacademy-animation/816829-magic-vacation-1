@@ -29,20 +29,8 @@
     transform-origin: center 60%;
   }
 
-  30% {
-    transform: translate3d(0, 2rem, 0) rotate(-3deg);
-  }
-
-  55% {
-    transform: translate3d(0, 0, 0) rotate(0deg);
-  }
-
-  85% {
-    transform: translate3d(0, 2rem, 0) rotate(-3deg);
-  }
-
   to {
-    transform: translate3d(0, 0, 0) rotate(0deg);
+    transform: translate3d(0, 2rem, 0) rotate(-3deg);
     transform-origin: center 60%;
   }
 }
@@ -156,7 +144,7 @@
   .result__image-flamingo {
     animation:
       activate-flamingo 0.3s ease 1.3s backwards,
-      follow-through-flamingo 3.5s linear 1.9s forwards;
+      follow-through-flamingo 1s linear 1.9s forwards infinite alternate;
   }
 
   .result__image-leaf-green {

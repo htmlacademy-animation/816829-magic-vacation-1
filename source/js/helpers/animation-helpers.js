@@ -1,9 +1,7 @@
-import {escape} from 'he';
-
 const getLetterHTML = (letter) => {
-  return letter === ` `
-    ? `&nbsp;`
-    : escape(letter);
+  return letter
+    .replace(` `, `&nbsp;`)
+    .replace(`<`, `&lt;`);
 };
 
 const applyAccentTypography = (element, lineClassName = `accent-line`) => {
@@ -17,7 +15,7 @@ const applyAccentTypography = (element, lineClassName = `accent-line`) => {
     .filter(Boolean)
     .map((line) => {
       return (`
-        <span class="${escape(lineClassName)}">
+        <span class="${lineClassName}">
             ${Array.from(line).map((letter) => `<span>${getLetterHTML(letter)}</span>`).join(``)}
         </span>
       `);

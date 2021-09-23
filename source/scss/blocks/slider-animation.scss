@@ -21,40 +21,8 @@
 
 .slider__item-title {
   .screen.active .slider__item.swiper-slide-active & {
-    $delay: 0s;
-    $rate: 1;
-    $step: 0.05s;
-
-    .accent-line span {
-      animation: bounce-in-up 0.5s ease $delay both;
-    }
-
-    .accent-line:nth-child(1) span:nth-child(1) {
-      animation-delay: $delay + $rate * $step * 3;
-    }
-
-    .accent-line:nth-child(1) span:nth-child(2) {
-      animation-delay: $delay + $rate * $step * 2;
-    }
-
-    .accent-line:nth-child(1) span:nth-child(3) {
-      animation-delay: $delay + $rate * $step * 1;
-    }
-
-    .accent-line:nth-child(1) span:nth-child(4) {
-      animation-delay: $delay + $rate * $step * 2;
-    }
-
-    .accent-line:nth-child(1) span:nth-child(5) {
-      animation-delay: $delay + $rate * $step * 3;
-    }
-
-    .accent-line:nth-child(1) span:nth-child(6) {
-      animation-delay: $delay + $rate * $step * 2;
-    }
-
-    .accent-line:nth-child(1) span:nth-child(7) {
-      animation-delay: $delay + $rate * $step * 1;
-    }
+    @include accent-animation(0.5s, 0s, 1, 0.05s,
+      // ИСТОРИИ
+      (3, 2, 1, 2, 3, 2, 1));
   }
 }

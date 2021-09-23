@@ -66,40 +66,8 @@
 
 .rules__title {
   .screen.active & {
-    $delay: 0s;
-    $rate: 1;
-    $step: 0.066s;
-
-    .accent-line span {
-      animation: bounce-in-up 0.4s ease $delay both;
-    }
-
-    .accent-line:nth-child(1) span:nth-child(1) {
-      animation-delay: $delay + $rate * $step * 3;
-    }
-
-    .accent-line:nth-child(1) span:nth-child(2) {
-      animation-delay: $delay + $rate * $step * 2;
-    }
-
-    .accent-line:nth-child(1) span:nth-child(3) {
-      animation-delay: $delay + $rate * $step * 1.5;
-    }
-
-    .accent-line:nth-child(1) span:nth-child(4) {
-      animation-delay: $delay + $rate * $step * 1;
-    }
-
-    .accent-line:nth-child(1) span:nth-child(5) {
-      animation-delay: $delay + $rate * $step * 2.5;
-    }
-
-    .accent-line:nth-child(1) span:nth-child(6) {
-      animation-delay: $delay + $rate * $step * 2;
-    }
-
-    .accent-line:nth-child(1) span:nth-child(7) {
-      animation-delay: $delay + $rate * $step * 1;
-    }
+    @include accent-animation(0.4s, 0s, 1, 0.066s,
+      // ПРАВИЛА
+      (3, 2, 1.5, 1, 2.5, 2, 1));
   }
 }
