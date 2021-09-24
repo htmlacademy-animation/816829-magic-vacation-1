@@ -1,14 +1,24 @@
-@keyframes scale-up {
+@keyframes bounce-in {
   from {
-    transform: scale(0);
+    transform: scale3d(0, 0, 1);
   }
 
   to {
-    transform: scale(1);
+    transform: scale3d(1, 1, 1);
   }
 }
 
-@keyframes opacity-up {
+@keyframes bounce-in-up {
+  from {
+    transform: translate3d(0, 100%, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fade-in {
   from {
     opacity: 0;
   }
@@ -18,27 +28,19 @@
   }
 }
 
-@keyframes translate-left {
+@keyframes fade-in-left {
   from {
-    transform: translateX(1rem);
+    opacity: 0;
+    transform: translate3d(1rem, 0, 0);
   }
 
   to {
-    transform: translateX(0);
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 
-@keyframes dark-text-opacity-up {
-  from {
-    color: rgba($c-dark, 0);
-  }
-
-  to {
-    color: rgba($c-dark, 1);
-  }
-}
-
-@keyframes btn-background {
+@keyframes expand-btn-background {
   from {
     width: 6rem;
     opacity: 0;

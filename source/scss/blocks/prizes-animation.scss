@@ -1,0 +1,7 @@
+.prizes__title {
+  .screen.active & {
+    @include accent-animation(0.4s, 0.7s, 1, 0.066s,
+      // ПРИЗЫ
+      (3, 2, 1, 2, 2.5));
+  }
+}

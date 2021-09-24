@@ -1,0 +1,7 @@
+.game__title {
+  .screen.active & {
+    @include accent-animation(0.4s, 0s, 1, 0.066s,
+      // ИГРА
+      (3, 2, 1, 1.5));
+  }
+}
