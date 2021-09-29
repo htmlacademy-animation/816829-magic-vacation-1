@@ -1,16 +1,10 @@
-export default () => {
-  let footerTogglers = document.querySelectorAll(`.js-footer-toggler`);
+import {findAncestor} from '../helpers/document-helpers';
 
-  if (footerTogglers.length) {
-    for (let i = 0; i < footerTogglers.length; i++) {
-      footerTogglers[i].addEventListener(`click`, function () {
-        let footer = footerTogglers[i].parentNode;
-        if (footer.classList.contains(`screen__footer--full`)) {
-          footer.classList.remove(`screen__footer--full`);
-        } else {
-          footer.classList.add(`screen__footer--full`);
-        }
-      });
-    }
-  }
+export default () => {
+  document.querySelectorAll(`.js-footer-toggler`).forEach((footerTogglerElement) => {
+    footerTogglerElement.addEventListener(`click`, () => {
+      const footer = findAncestor(footerTogglerElement, `.screen__footer`);
+      footer.classList.toggle(`screen__footer--full`);
+    });
+  });
 };

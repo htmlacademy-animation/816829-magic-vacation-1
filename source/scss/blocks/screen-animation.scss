@@ -56,13 +56,55 @@
   }
 }
 
-
 .screen__footer,
-.screen__disclaimer {
-  transform: translateY(110%);
-  transition: transform 0.3s $cubic-bezier-almost-done-at-half 0.1s;
+.disclaimer {
+  &:not(.static) {
+    transition:
+      transform 0.3s $cubic-bezier-almost-done-at-half 0.1s,
+      width 0.3s ease 0.1s,
+      height 0.3s ease 0.1s;
 
-  .loaded & {
-    transform: translateY(0);
+    transform: translateY(110%);
+
+    .screen.active & {
+      transform: translateY(0);
+    }
+
+    .screen.deactivated & {
+      transform: translateY(110%);
+    }
+  }
+
+  &.static {
+    transition:
+      color 0.3s $cubic-bezier-almost-done-at-half 0.1s,
+      width 0.3s ease 0.1s,
+      height 0.3s ease 0.1s;
+
+    color: rgba($c-dark, 0); // использую color, чтобы не создавать лишних узлов в html
+
+    .screen.active & {
+      color: rgba($c-dark, 1);
+    }
+
+    .screen.deactivated & {
+      color: rgba($c-dark, 0);
+    }
+  }
+
+  @include tablet-portrait {
+    .screen.active & {
+      .screen__footer-container {
+        transition: color 0.3s ease 0.4s;
+      }
+
+      &:not(.screen__footer--full) .screen__footer-container {
+        color: rgba($c-dark, 0);
+      }
+
+      &.screen__footer--full .screen__footer-container {
+        color: rgba($c-dark, 1);
+      }
+    }
   }
 }

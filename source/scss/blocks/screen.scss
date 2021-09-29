@@ -5,9 +5,14 @@
   min-height: 100vh;
   z-index: 1;
   overflow: hidden;
+  opacity: 0;
 
   &--hidden {
     display: none;
+  }
+
+  &.active {
+    opacity: 1;
   }
 
   @media (max-width: $tablet) and (orientation: portrait) {
@@ -47,7 +52,7 @@
   background-color: $c-light;
   z-index: 1;
 
-  @media (max-width: $tablet) and (orientation: portrait) {
+  @include tablet-portrait {
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 0 3.6rem 0 0;

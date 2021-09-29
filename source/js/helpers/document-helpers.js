@@ -18,6 +18,21 @@ const scrollIntoViewIfNeeded = (element) => {
   }
 };
 
+/**
+ * @param {Element} element
+ * @param {String} selector
+ * @return {Element | null}
+ */
+const findAncestor = (element, selector) => {
+  for (let ancestor = element; ancestor; ancestor = ancestor.parentNode) {
+    if (ancestor.matches(selector)) {
+      return ancestor;
+    }
+  }
+  return null;
+};
+
 export {
   scrollIntoViewIfNeeded,
+  findAncestor,
 };

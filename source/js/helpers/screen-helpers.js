@@ -7,34 +7,39 @@ const ScreenState = {
 };
 
 /**
- * @param {Element} element
+ * @param {{element: Element}} screen
  * @param {ScreenState} state
  */
-const setScreenState = (element, state) => {
-  if (!element) {
+const setScreenState = (screen, state) => {
+  if (!screen) {
     return;
   }
   switch (state) {
     case ScreenState.HIDDEN:
-      element.classList.remove(`active`, `deactivated`);
-      element.classList.add(`screen--hidden`);
+      screen.element.classList.remove(`active`, `deactivated`);
+      screen.element.classList.add(`screen--hidden`);
       break;
 
     case ScreenState.CURRENT:
-      element.classList.remove(`active`, `deactivated`, `screen--hidden`);
+      screen.element.classList.remove(`active`, `deactivated`, `screen--hidden`);
       break;
 
     case ScreenState.ACTIVE:
-      element.classList.add(`active`);
+      screen.element.classList.add(`active`);
       break;
 
     case ScreenState.DEACTIVATED:
-      element.classList.add(`deactivated`);
+      screen.element.classList.add(`deactivated`);
       break;
   }
+};
+
+const getScreenIdByLocation = () => {
+  return window.location.hash.substring(1);
 };
 
 export {
   ScreenState,
   setScreenState,
+  getScreenIdByLocation,
 };

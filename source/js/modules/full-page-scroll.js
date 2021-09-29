@@ -1,125 +1,143 @@
 import throttle from 'lodash/throttle';
-import {ScreenState, setScreenState} from '../helpers/screen-helpers';
+import clamp from 'lodash/clamp';
+import {ScreenState, setScreenState, getScreenIdByLocation} from '../helpers/screen-helpers';
 import {scrollIntoViewIfNeeded} from '../helpers/document-helpers';
 
 const Timeout = {
-  THROTTLE: 1000,
-  HIDDEN: 500,
+  DOCUMENT_WHEEL: 1000,
+  PREVIOUS_SCREEN_HIDDEN: 1000,
+  CURRENT_SCREEN_ACTIVE: 500,
 };
 
 export default class FullPageScroll {
   constructor() {
-    this.scrollFlag = true;
-    this.timeout = null;
+    this.menus = Array.prototype.map.call(document.querySelectorAll(`.page-header__menu .js-menu-link`), (element, index) => {
+      return {
+        index,
+        screenId: element.dataset.screenId,
+        element,
+      };
+    });
+    this.activeMenu = null;
 
-    this.screenElements = Array.from(document.querySelectorAll(`.screen:not(.screen--result)`));
-    this.menuElements = Array.from(document.querySelectorAll(`.page-header__menu .js-menu-link`));
+    this.screens = Array.prototype.map.call(document.querySelectorAll(`.screen:not(.screen--result)`), (element, index) => {
+      return {
+        index,
+        id: element.id,
+        element,
+        footerElement: element.querySelector(`.screen__footer, .disclaimer`),
+      };
+    });
+    this.currentScreen = null;
+    this.onCurrentScreenActive = null;
+    this.activateCurrentScreenTimeoutId = 0;
+    this.previousScreen = null;
+    this.onPreviousScreenHidden = null;
+    this.previousScreenHiddenTimeoutId = 0;
 
-    this.activeScreen = 0;
-    this.onScrollHandler = this.onScroll.bind(this);
-    this.onUrlHashChengedHandler = this.onUrlHashChanged.bind(this);
+    this.onDocumentWheelHandler = throttle(this.onDocumentWheel.bind(this), Timeout.DOCUMENT_WHEEL, {
+      leading: false,
+      trailing: true,
+    });
+    this.onWindowPopStateHandler = this.onWindowPopState.bind(this);
+    this.onWindowResizeHandler = this.onWindowResize.bind(this);
+  }
 
-    this.onHidden = null;
-    this.hiddenTimeoutId = 0;
+  setCurrentScreenIndex(index) {
+    this.previousScreen = this.currentScreen;
+    this.currentScreen = this.screens[clamp(index, 0, this.screens.length - 1)];
+
+    if (this.previousScreen === this.currentScreen) {
+      this.previousScreen = null;
+    }
+
+    this.activeMenu = this.menus.find((menu) => menu.screenId === this.currentScreen.id);
+
+    this.activateMenuItem();
+    this.deactivatePreviousScreen();
+    this.activateCurrentScreen();
+    this.dispatchScreenChangeEvent();
   }
 
   init() {
-    document.addEventListener(`wheel`, throttle(this.onScrollHandler, Timeout.THROTTLE, {trailing: true}));
-    window.addEventListener(`popstate`, this.onUrlHashChengedHandler);
-    window.addEventListener(`resize`, this.onWindowResize.bind(this));
+    document.addEventListener(`wheel`, this.onDocumentWheelHandler);
+    window.addEventListener(`popstate`, this.onWindowPopStateHandler);
+    window.addEventListener(`resize`, this.onWindowResizeHandler);
 
-    this.onUrlHashChanged();
+    this.onWindowPopState();
     this.onWindowResize();
   }
 
+  onDocumentWheel(evt) {
+    const step = Math.sign(evt.deltaY);
+    if (step) {
+      this.setCurrentScreenIndex(this.currentScreen.index + step);
+    }
+  }
+
+  onWindowPopState() {
+    const screenId = getScreenIdByLocation();
+    this.setCurrentScreenIndex(this.screens.findIndex((screen) => screenId === screen.id));
+  }
+
   onWindowResize() {
-    scrollIntoViewIfNeeded(document.getElementById(window.location.hash.substring(1)));
+    scrollIntoViewIfNeeded(document.getElementById(getScreenIdByLocation()));
   }
 
-  onScroll(evt) {
-    if (this.scrollFlag) {
-      this.reCalculateActiveScreenPosition(evt.deltaY);
-      const currentPosition = this.activeScreen;
-      if (currentPosition !== this.activeScreen) {
-        this.changePageDisplay();
-      }
-    }
-    this.scrollFlag = false;
-    if (this.timeout !== null) {
-      clearTimeout(this.timeout);
-    }
-    this.timeout = setTimeout(() => {
-      this.timeout = null;
-      this.scrollFlag = true;
-    }, this.THROTTLE_TIMEOUT);
-  }
-
-  onUrlHashChanged() {
-    const newIndex = this.screenElements.findIndex((screen) => location.hash.slice(1) === screen.id);
-    this.activeScreen = (newIndex < 0) ? 0 : newIndex;
-    this.changePageDisplay();
-  }
-
-  changePageDisplay() {
-    this.changeVisibilityDisplay();
-    this.changeActiveMenuItem();
-    this.emitChangeDisplayEvent();
-  }
-
-  changeVisibilityDisplay() {
-    if (this.onHidden) {
-      this.onHidden();
-    }
-
-    const currentScreenElement = this.screenElements[this.activeScreen];
-    let previousScreenElement = this.screenElements.find((screen) => screen.classList.contains(`active`));
-
-    if (previousScreenElement === currentScreenElement) {
-      previousScreenElement = undefined;
-    }
-
-    setScreenState(currentScreenElement, ScreenState.CURRENT);
-
-    requestAnimationFrame(() => {
-      setScreenState(currentScreenElement, ScreenState.ACTIVE);
+  activateMenuItem() {
+    this.menus.forEach((menu) => {
+      menu.element.classList.toggle(`active`, menu === this.activeMenu);
     });
+  }
 
-    setScreenState(previousScreenElement, ScreenState.DEACTIVATED);
+  deactivatePreviousScreen() {
+    if (this.onPreviousScreenHidden) {
+      this.onPreviousScreenHidden();
+    }
 
-    this.onHidden = () => {
-      clearTimeout(this.hiddenTimeoutId);
-      this.onHidden = null;
+    if (this.previousScreen && this.previousScreen.footerElement) {
+      this.previousScreen.footerElement.classList.toggle(`static`, this.currentScreen.footerElement);
+    }
 
-      setScreenState(previousScreenElement, ScreenState.HIDDEN);
+    setScreenState(this.previousScreen, ScreenState.DEACTIVATED);
+
+    this.onPreviousScreenHidden = () => {
+      clearTimeout(this.previousScreenHiddenTimeoutId);
+      this.onPreviousScreenHidden = null;
+
+      setScreenState(this.previousScreen, ScreenState.HIDDEN);
     };
-    this.hiddenTimeoutId = setTimeout(this.onHidden, Timeout.HIDDEN);
+
+    this.previousScreenHiddenTimeoutId = setTimeout(this.onPreviousScreenHidden, Timeout.PREVIOUS_SCREEN_HIDDEN);
   }
 
-  changeActiveMenuItem() {
-    const activeItem = this.menuElements.find((item) => item.dataset.href === this.screenElements[this.activeScreen].id);
-    if (activeItem) {
-      this.menuElements.forEach((item) => item.classList.remove(`active`));
-      activeItem.classList.add(`active`);
+  activateCurrentScreen() {
+    if (this.onCurrentScreenActive) {
+      this.onCurrentScreenActive();
     }
+
+    if (this.currentScreen.footerElement) {
+      this.currentScreen.footerElement.classList.toggle(`static`, this.previousScreen && this.previousScreen.footerElement);
+    }
+
+    setScreenState(this.currentScreen, ScreenState.CURRENT);
+
+    this.onCurrentScreenActive = () => {
+      clearTimeout(this.activateCurrentScreenTimeoutId);
+      this.onCurrentScreenActive = null;
+
+      setScreenState(this.currentScreen, ScreenState.ACTIVE);
+    };
+
+    this.activateCurrentScreenTimeoutId = setTimeout(this.onCurrentScreenActive, Timeout.CURRENT_SCREEN_ACTIVE);
   }
 
-  emitChangeDisplayEvent() {
-    const event = new CustomEvent(`screenChanged`, {
+  dispatchScreenChangeEvent() {
+    document.body.dispatchEvent(new CustomEvent(`screenchange`, {
       detail: {
-        'screenId': this.activeScreen,
-        'screenName': this.screenElements[this.activeScreen].id,
-        'screenElement': this.screenElements[this.activeScreen],
+        currentScreen: this.currentScreen,
+        previousScreen: this.previousScreen,
       },
-    });
-
-    document.body.dispatchEvent(event);
-  }
-
-  reCalculateActiveScreenPosition(delta) {
-    if (delta > 0) {
-      this.activeScreen = Math.min(this.screenElements.length - 1, ++this.activeScreen);
-    } else {
-      this.activeScreen = Math.max(0, --this.activeScreen);
-    }
+    }));
   }
 }

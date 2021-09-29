@@ -16,6 +16,12 @@
   }
 }
 
+@mixin tablet-portrait {
+  @media (max-width: $tablet - 1) and (orientation: portrait) {
+    @content;
+  }
+}
+
 @mixin container {
   margin: 0 auto;
   padding: 0 4rem;
@@ -83,9 +89,13 @@
   }
 
   @for $lineNumber from 1 through length($orders) {
-    @for $letterNumber from 1 through length(nth($orders, $lineNumber)) {
+    $lineOrders: nth($orders, $lineNumber);
+
+    @for $letterNumber from 1 through length($lineOrders) {
+      $letterOrder: nth($lineOrders, $letterNumber);
+
       .accent-line:nth-child(#{$lineNumber}) span:nth-child(#{$letterNumber}) {
-        animation-delay: $delay + $rate * $step * nth(nth($orders, $lineNumber), $letterNumber);
+        animation-delay: $delay + $rate * $step * $letterOrder;
       }
     }
   }

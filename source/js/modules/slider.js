@@ -1,83 +1,101 @@
-import Swiper from "swiper";
+import Swiper from 'swiper';
+
+const SLIDES = [
+  {
+    image: `url("img/slide1.jpg")`,
+    gradient: `linear-gradient(180deg, rgba(83, 65, 118, 0) 0%, #523e75 16.85%)`,
+    themeColor: `#a67ee5`,
+  },
+  {
+    image: `url("img/slide2.jpg")`,
+    gradient: `linear-gradient(180deg, rgba(45, 54, 179, 0) 0%, #2a34b0 16.85%)`,
+    themeColor: `#5468ff`,
+  },
+  {
+    image: `url("img/slide3.jpg")`,
+    gradient: `linear-gradient(180deg, rgba(92, 138, 198, 0) 0%, #5183c4 16.85%)`,
+    themeColor: `#a2ffff`,
+  },
+  {
+    image: `url("img/slide4.jpg")`,
+    gradient: `linear-gradient(180deg, rgba(45, 39, 63, 0) 0%, #2f2a42 16.85%)`,
+    themeColor: `#5e5484`,
+  },
+];
+
+/** @enum */
+const SwiperProps = {
+  DEFAULT: {
+    slidesPerView: 2,
+    slidesPerGroup: 2,
+    pagination: {
+      el: `.swiper-pagination`,
+      type: `fraction`,
+    },
+    navigation: {
+      nextEl: `.js-control-next`,
+      prevEl: `.js-control-prev`,
+    },
+    keyboard: {
+      enabled: true,
+    },
+    observer: true,
+    observeParents: true,
+  },
+  MOBILE_PORTRAIT: {
+    pagination: {
+      el: `.swiper-pagination`,
+      type: `bullets`,
+    },
+    keyboard: {
+      enabled: true,
+    },
+    observer: true,
+    observeParents: true,
+  },
+};
 
 export default () => {
-  let storySlider;
-  let sliderContainer = document.getElementById(`story`);
-  sliderContainer.style.backgroundImage = `url("img/slide1.jpg"), linear-gradient(180deg, rgba(83, 65, 118, 0) 0%, #523E75 16.85%)`;
+  let storySlider = null;
+  const sliderContainer = document.getElementById(`story`);
 
-  const setSlider = function () {
-    // FIX: portrait = innerWidth <= innerHeight
+  const renderSlide = ({image, gradient, themeColor}) => {
+    sliderContainer.style.backgroundImage = `${image}, ${gradient}`;
+    document.body.style.setProperty(`--theme-color`, themeColor);
+  };
+
+  const handlers = {
+    slideChange: () => {
+      renderSlide(SLIDES[Math.floor(storySlider.activeIndex / 2)]);
+    },
+    resize: () => {
+      storySlider.update();
+    },
+    destroy: () => {
+      document.body.style.removeProperty(`--theme-color`);
+    },
+  };
+
+  const renderSlider = () => {
+    if (storySlider) {
+      storySlider.destroy();
+    }
+
     if (((window.innerWidth / window.innerHeight) <= 1) || window.innerWidth < 769) {
       storySlider = new Swiper(`.js-slider`, {
-        pagination: {
-          el: `.swiper-pagination`,
-          type: `bullets`
-        },
-        keyboard: {
-          enabled: true
-        },
-        on: {
-          slideChange: () => {
-            if (storySlider.activeIndex === 0 || storySlider.activeIndex === 1) {
-              sliderContainer.style.backgroundImage = `url("img/slide1.jpg"), linear-gradient(180deg, rgba(83, 65, 118, 0) 0%, #523E75 16.85%)`;
-            } else if (storySlider.activeIndex === 2 || storySlider.activeIndex === 3) {
-              sliderContainer.style.backgroundImage = `url("img/slide2.jpg"), linear-gradient(180deg, rgba(45, 54, 179, 0) 0%, #2A34B0 16.85%)`;
-            } else if (storySlider.activeIndex === 4 || storySlider.activeIndex === 5) {
-              sliderContainer.style.backgroundImage = `url("img/slide3.jpg"), linear-gradient(180deg, rgba(92, 138, 198, 0) 0%, #5183C4 16.85%)`;
-            } else if (storySlider.activeIndex === 6 || storySlider.activeIndex === 7) {
-              sliderContainer.style.backgroundImage = `url("img/slide4.jpg"), linear-gradient(180deg, rgba(45, 39, 63, 0) 0%, #2F2A42 16.85%)`;
-            }
-          },
-          resize: () => {
-            storySlider.update();
-          }
-        },
-        observer: true,
-        observeParents: true
+        ...SwiperProps.MOBILE_PORTRAIT,
+        on: handlers,
       });
     } else {
       storySlider = new Swiper(`.js-slider`, {
-        slidesPerView: 2,
-        slidesPerGroup: 2,
-        pagination: {
-          el: `.swiper-pagination`,
-          type: `fraction`
-        },
-        navigation: {
-          nextEl: `.js-control-next`,
-          prevEl: `.js-control-prev`,
-        },
-        keyboard: {
-          enabled: true
-        },
-        on: {
-          slideChange: () => {
-            if (storySlider.activeIndex === 0) {
-              sliderContainer.style.backgroundImage = `url("img/slide1.jpg")`;
-            } else if (storySlider.activeIndex === 2) {
-              sliderContainer.style.backgroundImage = `url("img/slide2.jpg")`;
-            } else if (storySlider.activeIndex === 4) {
-              sliderContainer.style.backgroundImage = `url("img/slide3.jpg")`;
-            } else if (storySlider.activeIndex === 6) {
-              sliderContainer.style.backgroundImage = `url("img/slide4.jpg")`;
-            }
-          },
-          resize: () => {
-            storySlider.update();
-          }
-        },
-        observer: true,
-        observeParents: true
+        ...SwiperProps.DEFAULT,
+        on: handlers,
       });
     }
   };
 
-  window.addEventListener(`resize`, function () {
-    if (storySlider) {
-      storySlider.destroy();
-    }
-    setSlider();
-  });
+  renderSlide(SLIDES[0]);
 
-  setSlider();
+  window.addEventListener(`resize`, renderSlider);
+  renderSlider();
 };
