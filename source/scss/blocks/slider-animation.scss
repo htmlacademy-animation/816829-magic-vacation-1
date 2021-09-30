@@ -26,3 +26,39 @@
       (3, 2, 1, 2, 3, 2, 1));
   }
 }
+
+@keyframes activate-slider-control-prev {
+  from {
+    opacity: 0;
+    transform: translate3d(-8rem, 0, 0) rotate(-90deg);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+
+@keyframes activate-slider-control-next {
+  from {
+    opacity: 0;
+    transform: translate3d(8rem, 0, 0) rotate(90deg);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+
+.slider__control {
+  &--prev {
+    .screen.active & {
+      animation: activate-slider-control-prev 0.4s ease 0.8s both;
+    }
+  }
+
+  &--next {
+    .screen.active & {
+      animation: activate-slider-control-next 0.4s ease 0.8s both;
+    }
+  }
+}
