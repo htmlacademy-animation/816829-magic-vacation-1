@@ -1,12 +1,5 @@
 .rules__list {
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-rows: auto auto;
-
-  @media (max-width: $tablet) and (orientation: portrait) {
-    display: grid;
-    grid-auto-flow: row;
-  }
+  will-change: transform;
 }
 
 .rules__item {
@@ -67,7 +60,7 @@
 .rules__title {
   .screen.active & {
     @include accent-animation(0.4s, 0s, 1, 0.066s,
-      // ПРАВИЛА
-      (3, 2, 1.5, 1, 2.5, 2, 1));
+        // ПРАВИЛА
+        (3, 2, 1.5, 1, 2.5, 2, 1));
   }
 }

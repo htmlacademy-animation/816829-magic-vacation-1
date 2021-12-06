@@ -1,85 +1,122 @@
+import {sleep} from '../helpers/document-helpers';
+
+const PLACEHOLDER_DOTS_COUNT = 3;
+const CORRECT_ANSWER_ODDS = 0.5;
+
+const Timeout = {
+  ANSWER_PLACEHOLDER: 700,
+  ANSWER: 700,
+  PLACEHOLDER_REMOVAL: 400,
+};
+
+const renderQuestionText = (messageText) => {
+  const questionText = document.createElement(`p`);
+
+  questionText.innerText = messageText;
+
+  return questionText;
+};
+
+const renderQuestion = (questionText) => {
+  const text = renderQuestionText(questionText);
+
+  const item = document.createElement(`li`);
+  item.classList.add(`chat__message`, `chat__message--outcoming`);
+  item.append(text);
+
+  return {
+    item,
+    text,
+  };
+};
+
+const renderPlaceholder = () => {
+  const placeholder = document.createElement(`div`);
+  placeholder.classList.add(`chat__placeholder`);
+
+  for (let i = 0; i < PLACEHOLDER_DOTS_COUNT; i++) {
+    const dot = document.createElement(`span`);
+    placeholder.append(dot);
+  }
+
+  return placeholder;
+};
+
+const renderAnswerText = (isCorrect) => {
+  const answerText = document.createElement(`p`);
+  answerText.classList.add(`hidden`);
+
+  answerText.innerText = isCorrect ? `Да` : `Нет`;
+
+  return answerText;
+};
+
+const renderAnswer = (isCorrect) => {
+  const placeholder = renderPlaceholder();
+  const text = renderAnswerText(isCorrect);
+
+  const item = document.createElement(`li`);
+  item.classList.add(`chat__message`, `chat__message--incoming`);
+  item.append(placeholder, text);
+
+  return {
+    item,
+    placeholder,
+    text,
+  };
+};
+
+const revealAnswer = (answer) => {
+  answer.placeholder.classList.add(`chat__placeholder--hidden`);
+
+  answer.text.classList.remove(`hidden`);
+};
+
+const removePlaceholder = (answer) => {
+  answer.placeholder.remove();
+  delete answer.placeholder;
+};
+
 export default () => {
-  let messageForm = document.getElementById(`message-form`);
-  let messageField = document.getElementById(`message-field`);
-  let messageList = document.getElementById(`messages`);
-  let chatBlock = document.querySelector(`.js-chat`);
+  const messageForm = document.getElementById(`message-form`);
+  const messageField = document.getElementById(`message-field`);
+  const messageList = document.getElementById(`messages`);
+  const chatBlock = document.querySelector(`.js-chat`);
 
-  messageForm.addEventListener(`submit`, function (e) {
-    e.preventDefault();
+  const addMessage = (message) => {
+    messageList.append(message);
 
-    let scrollToBottom = function () {
-      if (messageList.scrollHeight > chatBlock.offsetHeight) {
-        chatBlock.scrollTop = messageList.scrollHeight;
-      }
-    };
+    if (messageList.scrollHeight > chatBlock.offsetHeight) {
+      chatBlock.scrollTop = messageList.scrollHeight;
+    }
+  };
 
-    let getAnswer = function () {
-      setTimeout(function () {
-        let answerEl = document.createElement(`li`);
-        let placeholder = document.createElement(`div`);
-        let textEl = document.createElement(`p`);
-        placeholder.classList.add(`chat__placeholder`);
-        for (let i = 0; i < 3; i++) {
-          let dot = document.createElement(`span`);
-          placeholder.appendChild(dot);
-        }
-        answerEl.appendChild(placeholder);
-        answerEl.classList.add(`chat__message`);
-        answerEl.classList.add(`chat__message--incoming`);
-        answerEl.classList.add(`chat__message--last`);
-        let answer = Math.floor(Math.random() * 2);
-        let answerText;
+  const submitQuestion = async () => {
+    if (messageField.value) {
+      const messageText = messageField.value;
+      messageField.value = ``;
+      messageField.disabled = true;
 
-        if (answer) {
-          answerText = `Да`;
-        } else {
-          answerText = `Нет`;
-        }
+      const question = renderQuestion(messageText);
+      addMessage(question.item);
 
-        textEl.innerText = answerText;
-        textEl.classList.add(`hidden`);
-        answerEl.appendChild(textEl);
-        messageList.appendChild(answerEl);
-        scrollToBottom();
+      await sleep(Timeout.ANSWER_PLACEHOLDER);
+      const answer = renderAnswer(Math.random() <= CORRECT_ANSWER_ODDS);
+      addMessage(answer.item);
 
-        setTimeout(function () {
-          let lastMessage = document.querySelector(`.chat__message--last`);
-          if (lastMessage) {
-            let lastMessagePlaceholder = lastMessage.querySelector(`.chat__placeholder`);
-            let lastMessageText = lastMessage.querySelector(`p`);
-            lastMessagePlaceholder.classList.add(`chat__placeholder--hidden`);
-            setTimeout(function () {
-              lastMessagePlaceholder.remove();
-            }, 400);
-            lastMessageText.classList.remove(`hidden`);
-            lastMessage.classList.remove(`chat__message--last`);
-          }
-        }, 700);
-      }, 700);
-    };
+      await sleep(Timeout.ANSWER);
+      revealAnswer(answer);
 
-    let postQuestion = function () {
-      if (messageField.value) {
-        let messageEl = document.createElement(`li`);
-        messageEl.classList.add(`chat__message`);
-        let messageText = messageField.value;
-        let text = document.createElement(`p`);
-        text.innerText = messageText;
-        messageEl.appendChild(text);
-        messageEl.classList.add(`chat__message--outcoming`);
-        messageList.appendChild(messageEl);
-        messageField.value = ``;
-        messageField.setAttribute(`disabled`, `true`);
-        scrollToBottom();
+      messageField.disabled = false;
+      messageField.focus();
 
-        getAnswer();
+      await sleep(Timeout.PLACEHOLDER_REMOVAL);
+      removePlaceholder(answer);
+    }
+  };
 
-        messageField.removeAttribute(`disabled`);
-        messageField.focus();
-      }
-    };
-
-    postQuestion();
-
+  messageForm.addEventListener(`submit`, (evt) => {
+    evt.preventDefault();
+    submitQuestion();
   });
 };

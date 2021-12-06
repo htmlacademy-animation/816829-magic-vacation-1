@@ -1,14 +1,20 @@
 import {applyAccentTypography} from 'js/helpers/animation-helpers';
 
+const ACCENT_TYPOGRAPHY_SELECTORS = [
+  `.intro__title`,
+  `.intro__date`,
+  `.slider__item-title`,
+  `.prizes__title`,
+  `.rules__title`,
+  `.game__title`,
+];
+
 export default () => {
   window.addEventListener(`load`, () => {
     document.body.classList.add(`loaded`);
-  });
+  }, {once: true});
 
-  applyAccentTypography(document.querySelector(`.intro__title`));
-  applyAccentTypography(document.querySelector(`.intro__date`));
-  applyAccentTypography(document.querySelector(`.slider__item-title`));
-  applyAccentTypography(document.querySelector(`.prizes__title`));
-  applyAccentTypography(document.querySelector(`.rules__title`));
-  applyAccentTypography(document.querySelector(`.game__title`));
+  ACCENT_TYPOGRAPHY_SELECTORS.forEach((selector) => {
+    applyAccentTypography(document.querySelector(selector));
+  });
 };
