@@ -1,9 +1,21 @@
 /** @enum {string} */
+const ScreenId = {
+  PRIZES: `prizes`,
+};
+
+/** @enum {string} */
 const ScreenState = {
   HIDDEN: `hidden`,
   CURRENT: `current`,
   ACTIVE: `active`,
   DEACTIVATED: `deactivated`,
+};
+
+/** @enum {string} */
+const ScreenEventType = {
+  SCREEN_CHANGE: `screenchange`,
+  PREVIOUS_SCREEN_HIDDEN: `previousscreenhidden`,
+  CURRENT_SCREEN_ACTIVE: `currentscreenactive`,
 };
 
 /**
@@ -39,7 +51,9 @@ const getScreenIdByLocation = () => {
 };
 
 export {
+  ScreenId,
   ScreenState,
+  ScreenEventType,
   setScreenState,
   getScreenIdByLocation,
 };

@@ -4,6 +4,12 @@
   }
 }
 
+@mixin landscape {
+  @media (orientation: landscape) {
+    @content;
+  }
+}
+
 @mixin mobile-portrait {
   @media (max-width: $mobile - 1) and (orientation: portrait) {
     @content;
