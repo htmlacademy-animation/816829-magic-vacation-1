@@ -1,5 +1,7 @@
 import Swiper from 'swiper';
 
+import {isMobileOrPortrait} from '../helpers/document-helpers';
+
 const SLIDES = [
   {
     image: `url("img/slide1.jpg")`,
@@ -23,7 +25,7 @@ const SLIDES = [
   },
 ];
 
-/** @enum */
+/** @enum {object} */
 const SwiperProps = {
   DEFAULT: {
     slidesPerView: 2,
@@ -61,7 +63,7 @@ export default () => {
 
   const renderSlide = ({image, gradient, themeColor}) => {
     sliderContainer.style.backgroundImage = `${image}, ${gradient}`;
-    document.body.style.setProperty(`--theme-color`, themeColor);
+    document.documentElement.style.setProperty(`--theme-color`, themeColor);
   };
 
   const handlers = {
@@ -81,7 +83,7 @@ export default () => {
       storySlider.destroy();
     }
 
-    if (((window.innerWidth / window.innerHeight) <= 1) || window.innerWidth < 769) {
+    if (isMobileOrPortrait()) {
       storySlider = new Swiper(`.js-slider`, {
         ...SwiperProps.MOBILE_PORTRAIT,
         on: handlers,

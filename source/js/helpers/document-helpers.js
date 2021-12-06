@@ -32,7 +32,32 @@ const findAncestor = (element, selector) => {
   return null;
 };
 
+const isPortrait = () => {
+  return (window.innerWidth / window.innerHeight) <= 1;
+};
+
+const isMobileOrPortrait = () => {
+  return window.innerWidth <= 768 || isPortrait();
+};
+
+const sleep = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+};
+
+const addClassToken = (element, classToken) => {
+  element.classList.remove(classToken);
+  setTimeout(() => {
+    element.classList.add(classToken);
+  });
+};
+
 export {
   scrollIntoViewIfNeeded,
   findAncestor,
+  isPortrait,
+  isMobileOrPortrait,
+  sleep,
+  addClassToken,
 };

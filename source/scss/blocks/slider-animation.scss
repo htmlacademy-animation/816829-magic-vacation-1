@@ -30,7 +30,7 @@
 @keyframes activate-slider-control-prev {
   from {
     opacity: 0;
-    transform: translate3d(-8rem, 0, 0) rotate(-90deg);
+    transform: translate3d(-8rem, 0, 0) rotate(-180deg);
   }
 
   to {
@@ -41,7 +41,7 @@
 @keyframes activate-slider-control-next {
   from {
     opacity: 0;
-    transform: translate3d(8rem, 0, 0) rotate(90deg);
+    transform: translate3d(8rem, 0, 0) rotate(180deg);
   }
 
   to {

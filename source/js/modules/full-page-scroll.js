@@ -1,6 +1,6 @@
 import throttle from 'lodash/throttle';
 import clamp from 'lodash/clamp';
-import {ScreenState, setScreenState, getScreenIdByLocation} from '../helpers/screen-helpers';
+import {ScreenState, ScreenEventType, setScreenState, getScreenIdByLocation} from '../helpers/screen-helpers';
 import {scrollIntoViewIfNeeded} from '../helpers/document-helpers';
 
 const Timeout = {
@@ -56,7 +56,7 @@ export default class FullPageScroll {
     this.activateMenuItem();
     this.deactivatePreviousScreen();
     this.activateCurrentScreen();
-    this.dispatchScreenChangeEvent();
+    this.dispatchEvent(ScreenEventType.SCREEN_CHANGE);
   }
 
   init() {
@@ -106,6 +106,7 @@ export default class FullPageScroll {
       this.onPreviousScreenHidden = null;
 
       setScreenState(this.previousScreen, ScreenState.HIDDEN);
+      this.dispatchEvent(ScreenEventType.PREVIOUS_SCREEN_HIDDEN);
     };
 
     this.previousScreenHiddenTimeoutId = setTimeout(this.onPreviousScreenHidden, Timeout.PREVIOUS_SCREEN_HIDDEN);
@@ -127,13 +128,14 @@ export default class FullPageScroll {
       this.onCurrentScreenActive = null;
 
       setScreenState(this.currentScreen, ScreenState.ACTIVE);
+      this.dispatchEvent(ScreenEventType.CURRENT_SCREEN_ACTIVE);
     };
 
     this.activateCurrentScreenTimeoutId = setTimeout(this.onCurrentScreenActive, Timeout.CURRENT_SCREEN_ACTIVE);
   }
 
-  dispatchScreenChangeEvent() {
-    document.body.dispatchEvent(new CustomEvent(`screenchange`, {
+  dispatchEvent(screenEventType) {
+    document.body.dispatchEvent(new CustomEvent(screenEventType, {
       detail: {
         currentScreen: this.currentScreen,
         previousScreen: this.previousScreen,

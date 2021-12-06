@@ -173,10 +173,16 @@
           </div>
           <ul class="prizes__list">
             <li class="prizes__item prizes__item--journeys">
+              <template id="journeys-landscape-icon-template">
+                <include src="./img/prize1--animate.svg"></include>
+              </template>
+              <template id="journeys-portrait-icon-template">
+                <include src="./img/prize1-mob.svg"></include>
+              </template>
               <div class="prizes__icon">
                 <picture>
                   <source srcset="img/prize1-mob.svg" media="(orientation: portrait)">
-                  <img src="img/prize1.svg" alt="">
+                  <img src="img/prize1--animate.svg" alt="">
                 </picture>
               </div>
               <p class="prizes__desc">
@@ -188,7 +194,7 @@
               <div class="prizes__icon">
                 <picture>
                   <source srcset="img/prize2-mob.svg" media="(orientation: portrait)">
-                  <img src="img/prize2.svg" alt="">
+                  <img src="img/prize2--animate.svg" alt="">
                 </picture>
               </div>
               <p class="prizes__desc">
@@ -200,7 +206,7 @@
               <div class="prizes__icon">
                 <picture>
                   <source srcset="img/prize3-mob.svg" media="(orientation: portrait)">
-                  <img src="img/prize3.svg" alt="">
+                  <img src="img/prize3--animate.svg" alt="">
                 </picture>
               </div>
               <p class="prizes__desc">
