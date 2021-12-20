@@ -1,37 +1,48 @@
 import {addClassToken, isPortrait as calculateIsPortrait} from '../helpers/document-helpers';
 import {ScreenId, ScreenEventType} from '../helpers/screen-helpers';
 
+const PRIZE_KEYS = [`journeys`, `cases`, `codes`];
+
 export default () => {
   const prizesScreen = document.querySelector(`.screen--prizes`);
-  const journeysLandscapeIconTemplate = document.querySelector(`#journeys-landscape-icon-template`);
-  const journeysPortraitIconTemplate = document.querySelector(`#journeys-portrait-icon-template`);
-  const journeysIconContainer = document.querySelector(`.prizes__item--journeys .prizes__icon`);
+
+  const icons = PRIZE_KEYS.map((prizeKey) => ({
+    iconContainer: document.querySelector(`.prizes__item--${prizeKey} .prizes__icon`),
+    portraitIconTemplate: document.querySelector(`#${prizeKey}-portrait-icon-template`),
+    landscapeIconTemplate: document.querySelector(`#${prizeKey}-landscape-icon-template`),
+  }));
 
   const state = {
     isPortrait: undefined,
   };
 
-  const renderJourneysIcon = () => {
+  const renderIcons = () => {
     const isPortrait = calculateIsPortrait();
     if (state.isPortrait === isPortrait) {
       return;
     }
     state.isPortrait = isPortrait;
 
-    const iconTemplate = isPortrait
-      ? journeysPortraitIconTemplate
-      : journeysLandscapeIconTemplate;
+    for (const {iconContainer, portraitIconTemplate, landscapeIconTemplate} of icons) {
+      const adaptiveIconTemplate = isPortrait
+        ? portraitIconTemplate
+        : landscapeIconTemplate;
 
-    journeysIconContainer.replaceChild(iconTemplate.content.cloneNode(true), journeysIconContainer.firstElementChild);
+      iconContainer.replaceChild(adaptiveIconTemplate.content.cloneNode(true), iconContainer.firstElementChild);
+    }
 
     addClassToken(prizesScreen, `first-glance`);
+  };
+
+  const onWindowResize = (_evt) => {
+    renderIcons();
   };
 
   const onScreenChange = (evt) => {
     const {currentScreen} = evt.detail;
 
     if (currentScreen.id === ScreenId.PRIZES) {
-      renderJourneysIcon();
+      renderIcons();
 
       window.addEventListener(`resize`, onWindowResize);
     }
@@ -43,10 +54,6 @@ export default () => {
     if (previousScreen && previousScreen.id === ScreenId.PRIZES) {
       window.removeEventListener(`resize`, onWindowResize);
     }
-  };
-
-  const onWindowResize = (_evt) => {
-    renderJourneysIcon();
   };
 
   document.body.addEventListener(ScreenEventType.SCREEN_CHANGE, onScreenChange);
