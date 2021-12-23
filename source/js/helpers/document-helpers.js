@@ -1,3 +1,7 @@
+const Viewport = {
+  TABLET: 768,
+};
+
 /**
  * @param {Element} element
  */
@@ -37,7 +41,7 @@ const isPortrait = () => {
 };
 
 const isMobileOrPortrait = () => {
-  return window.innerWidth <= 768 || isPortrait();
+  return window.innerWidth < Viewport.TABLET || isPortrait();
 };
 
 const sleep = (timeout) => {
