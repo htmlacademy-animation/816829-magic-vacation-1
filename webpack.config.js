@@ -3,7 +3,7 @@ const CssoWebpackPlugin = require('csso-webpack-plugin').default;
 const CopyPlugin = require('copy-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
+const {resolve, join, sep} = require('path');
 
 module.exports = {
   entry: {
@@ -16,15 +16,19 @@ module.exports = {
   resolve: {
     extensions: [`.js`, `.sass`, `.scss`, `.css`],
     modules: [`source`, `./node_modules/`],
+    alias: {
+      helpers: resolve(__dirname, `source/js/helpers`),
+      modules: resolve(__dirname, `source/js/modules`),
+    },
   },
   mode: `development`,
   devtool: `source-map`,
   devServer: {
-    contentBase: path.join(__dirname, `build`),
+    contentBase: join(__dirname, `build`),
     port: 7777
   },
   output: {
-    path: path.join(__dirname, `build`),
+    path: join(__dirname, `build`),
     publicPath: ``,
     filename: `js/script.js`
   },
@@ -101,26 +105,26 @@ module.exports = {
     new CopyPlugin([
       {
         from: `source/fonts/**/*.{woff,woff2}`,
-        to: path.join(__dirname, `build`, `fonts`),
+        to: join(__dirname, `build`, `fonts`),
         flatten: true,
       },
       {
         from: `source/img/**`,
-        to: path.join(__dirname, `build`),
+        to: join(__dirname, `build`),
         transformPath(targetPath) {
-          return targetPath.replace(`source${path.sep}`, ``);
+          return targetPath.replace(`source${sep}`, ``);
         },
       },
       {
         from: `source/*.ico`,
-        to: path.join(__dirname, `build`),
+        to: join(__dirname, `build`),
         flatten: true,
       },
       {
         from: `source/3d/**`,
-        to: path.join(__dirname, `build`),
+        to: join(__dirname, `build`),
         transformPath(targetPath) {
-          return targetPath.replace(`source${path.sep}`, ``);
+          return targetPath.replace(`source${sep}`, ``);
         },
       }
     ]),

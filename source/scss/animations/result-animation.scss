@@ -142,9 +142,8 @@
   }
 
   .result__image-flamingo {
-    animation:
-      activate-flamingo 0.3s ease 1.3s backwards,
-      follow-through-flamingo 1s linear 1.9s forwards infinite alternate;
+    animation: activate-flamingo 0.3s ease 1.3s backwards,
+    follow-through-flamingo 1s linear 1.9s forwards infinite alternate;
   }
 
   .result__image-leaf-green {
@@ -179,4 +178,27 @@
   .screen--show & span {
     animation: activate-result-button 0.3s ease 1.1s both;
   }
+}
+
+.lose-heading-letter:nth-of-type(1) {
+  stroke-dasharray: 431.28;
+  stroke-dashoffset: 431.28;
+  transition: stroke-dashoffset 5s linear;
+
+  .screen--show & {
+    stroke-dashoffset: 0;
+  }
+}
+
+.win-heading {
+  will-change: transform;
+
+  .screen--show & {
+    animation: scale-down 1.4s linear both;
+  }
+}
+
+.lose-heading {
+  $lose-heading-scale: 270px / 110px;
+  transform: scale($lose-heading-scale, $lose-heading-scale) translateY(-23%);
 }

@@ -1,4 +1,4 @@
-import {sleep} from '../helpers/document-helpers';
+import {sleep} from 'helpers/document-helpers';
 
 const PLACEHOLDER_DOTS_COUNT = 3;
 const CORRECT_ANSWER_ODDS = 0.5;

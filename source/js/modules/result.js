@@ -1,9 +1,13 @@
+import {reloadSvg} from 'helpers/document-helpers';
+
 export default () => {
   const hideResult = (result) => {
     result.classList.replace(`screen--show`, `screen--hidden`);
   };
 
   const showResult = (result) => {
+    reloadSvg(result.querySelector(`.result__title svg`));
+
     result.classList.remove(`screen--hidden`);
     requestAnimationFrame(() => {
       result.classList.add(`screen--show`);

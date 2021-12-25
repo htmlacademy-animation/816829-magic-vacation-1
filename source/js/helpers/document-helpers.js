@@ -57,6 +57,10 @@ const addClassToken = (element, classToken) => {
   });
 };
 
+const reloadSvg = (element) => {
+  element.replaceWith(element.cloneNode(true));
+};
+
 export {
   scrollIntoViewIfNeeded,
   findAncestor,
@@ -64,4 +68,5 @@ export {
   isMobileOrPortrait,
   sleep,
   addClassToken,
+  reloadSvg,
 };

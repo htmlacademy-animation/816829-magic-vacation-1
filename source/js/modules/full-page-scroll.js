@@ -1,7 +1,7 @@
 import throttle from 'lodash/throttle';
 import clamp from 'lodash/clamp';
-import {ScreenState, ScreenEventType, setScreenState, getScreenIdByLocation} from '../helpers/screen-helpers';
-import {scrollIntoViewIfNeeded} from '../helpers/document-helpers';
+import {ScreenState, ScreenEventType, setScreenState, getScreenIdByLocation} from 'helpers/screen-helpers';
+import {scrollIntoViewIfNeeded} from 'helpers/document-helpers';
 
 const Timeout = {
   DOCUMENT_WHEEL: 1000,
