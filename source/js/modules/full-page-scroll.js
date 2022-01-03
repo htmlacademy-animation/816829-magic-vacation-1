@@ -9,7 +9,7 @@ const Timeout = {
   CURRENT_SCREEN_ACTIVE: 500,
 };
 
-export default class FullPageScroll {
+class FullPageScroll {
   constructor() {
     this.menus = Array.prototype.map.call(document.querySelectorAll(`.page-header__menu .js-menu-link`), (element, index) => {
       return {
@@ -143,3 +143,8 @@ export default class FullPageScroll {
     }));
   }
 }
+
+export default () => {
+  const fullPageScroll = new FullPageScroll();
+  fullPageScroll.init();
+};

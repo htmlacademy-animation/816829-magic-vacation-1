@@ -142,8 +142,9 @@
   }
 
   .result__image-flamingo {
-    animation: activate-flamingo 0.3s ease 1.3s backwards,
-    follow-through-flamingo 1s linear 1.9s forwards infinite alternate;
+    animation:
+      activate-flamingo 0.3s ease 1.3s backwards,
+      follow-through-flamingo 1s linear 1.9s forwards infinite alternate;
   }
 
   .result__image-leaf-green {
