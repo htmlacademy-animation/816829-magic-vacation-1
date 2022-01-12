@@ -1,4 +1,4 @@
-import {findAncestor} from '../helpers/document-helpers';
+import {findAncestor} from 'helpers/document-helpers';
 
 export default () => {
   const footerTogglers = document.querySelectorAll(`.js-footer-toggler`);

@@ -1,5 +1,5 @@
-import {addClassToken, isPortrait as calculateIsPortrait} from '../helpers/document-helpers';
-import {ScreenId, ScreenEventType} from '../helpers/screen-helpers';
+import {addClassToken, isPortrait as calculateIsPortrait} from 'helpers/document-helpers';
+import {ScreenId, ScreenEventType} from 'helpers/screen-helpers';
 
 const PRIZE_KEYS = [`journeys`, `cases`, `codes`];
 

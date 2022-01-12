@@ -1,4 +1,4 @@
-import {isMobileOrPortrait} from '../helpers/document-helpers';
+import {isMobileOrPortrait} from 'helpers/document-helpers';
 
 export default () => {
   const emailInputs = document.querySelectorAll(`input[type="email"]`);

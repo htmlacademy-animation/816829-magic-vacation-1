@@ -1,4 +1,4 @@
-import {applyAccentTypography} from 'js/helpers/animation-helpers';
+import {applyAccentTypography} from 'helpers/animation-helpers';
 
 const ACCENT_TYPOGRAPHY_SELECTORS = [
   `.intro__title`,
