@@ -1,6 +1,7 @@
 /** @enum {string} */
 const ScreenId = {
   PRIZES: `prizes`,
+  GAME: `game`,
 };
 
 /** @enum {string} */
