@@ -101,6 +101,21 @@
     font-size: 2rem;
     margin-bottom: 1rem;
   }
+
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  &::before {
+    content: "05:00";
+    visibility: hidden;
+  }
+
+  &::after {
+    content: attr(aria-label);
+    position: absolute;
+  }
 }
 
 .game__body {

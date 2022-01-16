@@ -1,15 +1,55 @@
 import {addClassToken, isPortrait as calculateIsPortrait} from 'helpers/document-helpers';
 import {ScreenId, ScreenEventType} from 'helpers/screen-helpers';
+import {FrameAnimation} from 'helpers/frame-animation';
 
-const PRIZE_KEYS = [`journeys`, `cases`, `codes`];
+const NUMBERS_ANIMATION_FPS = 12;
+
+const casesNumbersContainer = document.querySelector(`.prizes__item--cases .prizes__desc b`);
+const codesNumbersContainer = document.querySelector(`.prizes__item--codes .prizes__desc b`);
+
+/**
+ * @type {Array<{
+ *   key: string,
+ *   numbersAnimation?: FrameAnimation,
+ * }>]}
+ */
+const prizes = [
+  {
+    key: `journeys`,
+  },
+  {
+    key: `cases`,
+    // 38.7s (1) - 39.3s (7)
+    numbersAnimation: new FrameAnimation({
+      delay: 5700,
+      frames: [1, 2, 3, 4, 5, 6, 7],
+      fps: NUMBERS_ANIMATION_FPS,
+      onRenderFrame(number) {
+        casesNumbersContainer.dataset.currentNumber = number;
+      },
+    }),
+  },
+  {
+    key: `codes`,
+    // 40.8 (11) - 41.5 (900)
+    numbersAnimation: new FrameAnimation({
+      delay: 7900,
+      frames: [11, 185, 371, 514, 821, 849, 900],
+      fps: NUMBERS_ANIMATION_FPS,
+      onRenderFrame(number) {
+        codesNumbersContainer.dataset.currentNumber = number;
+      },
+    }),
+  },
+];
 
 export default () => {
   const prizesScreen = document.querySelector(`.screen--prizes`);
 
-  const icons = PRIZE_KEYS.map((prizeKey) => ({
-    iconContainer: document.querySelector(`.prizes__item--${prizeKey} .prizes__icon`),
-    portraitIconTemplate: document.querySelector(`#${prizeKey}-portrait-icon-template`),
-    landscapeIconTemplate: document.querySelector(`#${prizeKey}-landscape-icon-template`),
+  const icons = prizes.map((prize) => ({
+    iconContainer: document.querySelector(`.prizes__item--${prize.key} .prizes__icon`),
+    portraitIconTemplate: document.querySelector(`#${prize.key}-portrait-icon-template`),
+    landscapeIconTemplate: document.querySelector(`#${prize.key}-landscape-icon-template`),
   }));
 
   const state = {
@@ -17,14 +57,8 @@ export default () => {
   };
 
   const renderIcons = () => {
-    const isPortrait = calculateIsPortrait();
-    if (state.isPortrait === isPortrait) {
-      return;
-    }
-    state.isPortrait = isPortrait;
-
     for (const {iconContainer, portraitIconTemplate, landscapeIconTemplate} of icons) {
-      const adaptiveIconTemplate = isPortrait
+      const adaptiveIconTemplate = state.isPortrait
         ? portraitIconTemplate
         : landscapeIconTemplate;
 
@@ -34,15 +68,45 @@ export default () => {
     addClassToken(prizesScreen, `first-glance`);
   };
 
+  const isPortraitChanged = () => {
+    const isPortrait = calculateIsPortrait();
+    if (state.isPortrait === isPortrait) {
+      return false;
+    }
+    state.isPortrait = isPortrait;
+    return true;
+  };
+
+  const activateNumbersAnimationsIfNeeded = () => {
+    prizes.forEach(({numbersAnimation}) => {
+      if (!numbersAnimation) {
+        return;
+      }
+      if (state.isPortrait) {
+        numbersAnimation.stop();
+        return;
+      }
+      if (!numbersAnimation.hasStarted()) {
+        numbersAnimation.start();
+      }
+    });
+  };
+
   const onWindowResize = (_evt) => {
-    renderIcons();
+    if (isPortraitChanged()) {
+      renderIcons();
+      activateNumbersAnimationsIfNeeded();
+    }
   };
 
   const onScreenChange = (evt) => {
     const {currentScreen} = evt.detail;
 
     if (currentScreen.id === ScreenId.PRIZES) {
-      renderIcons();
+      if (isPortraitChanged()) {
+        renderIcons();
+        activateNumbersAnimationsIfNeeded();
+      }
 
       window.addEventListener(`resize`, onWindowResize);
     }

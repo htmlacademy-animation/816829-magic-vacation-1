@@ -29,7 +29,7 @@ export default () => {
       const minutes = Math.floor(remainingSeconds / SECONDS_IN_MINUTE);
       const seconds = remainingSeconds % SECONDS_IN_MINUTE;
 
-      gameCounter.innerHTML = `<span>${formatNumber(minutes)}</span>:<span>${formatNumber(seconds)}</span>`;
+      gameCounter.ariaLabel = [minutes, seconds].map(formatNumber).join(`:`);
     },
   });
 

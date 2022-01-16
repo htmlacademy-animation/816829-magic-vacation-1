@@ -6,6 +6,26 @@
   }
 }
 
+.prizes__desc b {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+
+  &::before {
+    content: attr(data-final-number);
+    visibility: hidden;
+  }
+
+  &::after {
+    content: attr(data-final-number);
+    position: absolute;
+
+    @include landscape {
+      content: attr(data-current-number);
+    }
+  }
+}
+
 .prizes__item--journeys {
   @include landscape {
     transform: translate3d(100%, 0, 0);
