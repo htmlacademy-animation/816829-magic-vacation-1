@@ -338,12 +338,16 @@
     <section class="screen screen--hidden screen--result" id="result">
       <div class="screen__wrapper">
         <div class="result result--trip">
-          <div class="result__image">
-            <picture>
-              <source srcset="img/result1-mob.png 1x, img/result1-mob@2x.png 2x" media="(max-width: 768px) and (orientation: portrait)">
-              <img src="img/result1.png" srcset="img/result1@2x.png 2x" alt="">
-            </picture>
-          </div>
+          <img class="result__image-tree1" src="img/result-trip/tree.png" alt="" width="38" height="101" hidden>
+          <img class="result__image-tree2" src="img/result-trip/tree%202.png" alt="" width="50" height="159" hidden>
+          <img class="result__image-ice" src="img/result-trip/ice.png" alt="" width="408" height="167" hidden>
+          <img class="result__image-animal" src="img/result-trip/sea-calf-2.png" alt="" width="488" height="488" hidden>
+          <img class="result__image-plane" src="img/result-trip/airplane.png" alt="" width="135" height="135" hidden>
+          <img class="result__image-snow" src="img/result-trip/snowflake.png" alt="" width="220" height="220" hidden>
+
+          <canvas class="result__canvas result__canvas--foreground"></canvas>
+          <canvas class="result__canvas result__canvas--background"></canvas>
+
           <h2 class="result__title">
             <span class="visually-hidden">Победа!</span>
             <include src="./img/win-heading.svg"></include>
