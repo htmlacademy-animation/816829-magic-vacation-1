@@ -65,8 +65,4 @@ export default () => {
 
   initResults();
   initPlayButton();
-
-  setTimeout(() => {
-    showResultButtons[0].click();
-  });
 };
